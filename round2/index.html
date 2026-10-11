@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#ffffff">
+<title>Weberman Residence: This or That, Round 2 | Max Weberman</title>
+<meta name="description" content="Head-to-head finish, fixture, and furniture decisions for the Weberman Residence.">
+<link rel="icon" href="../favicon.ico">
+<link rel="stylesheet" href="../style.css">
+<style>
+.sechead{text-align:center;margin:0 0 4px}
+.cap .rt{display:block;font:700 .75rem/1.2 var(--mw-font-body);letter-spacing:var(--mw-tracking-label);text-transform:uppercase;color:var(--mw-muted-text);margin-bottom:4px}
+.qfoot .btn[disabled]{opacity:.4;cursor:default}
+.sortbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.sortbar .btn.on{background:var(--mw-primary);color:var(--mw-primary-foreground)}
+.decisions{list-style:none;padding:0;margin:0}
+.decisions li{padding:10px 0;border-bottom:1px solid var(--mw-border)}
+.decisions .k{display:block;font:700 .75rem/1.2 var(--mw-font-body);letter-spacing:var(--mw-tracking-label);text-transform:uppercase;color:var(--mw-muted-text)}
+.dsec{margin-top:18px}
+.credits li{margin-bottom:6px;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="wordmark" href="./" aria-label="Weberman Residence, This or That Round 2">MAX WEBERMAN</a>
+  <button id="restartTop" class="btn btn-quiet mw-hover" type="button" hidden>Start Over</button>
+</header>
+<main id="app" tabindex="-1"></main>
+<footer class="foot">
+  <p>Photos: openly licensed from Wikimedia Commons. <a href="#credits">Photo Credits</a> · <a href="../">This or That Home</a> · <a href="https://webermanapps.github.io/blueprint-swipe/">Blueprint Swipe</a></p>
+  <p>&copy; Max Weberman. Notes stay on this device.</p>
+</footer>
+<div class="sharebar">
+  <button id="shareBtn" class="btn mw-hover" type="button">Share</button>
+  <span id="shareMsg" role="status" aria-live="polite"></span>
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
