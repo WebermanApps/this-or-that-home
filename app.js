@@ -322,12 +322,36 @@ function renderQuiz(){
  '<div class="qhead"><h2>'+esc(q.head)+'</h2></div>'+
  '<div class="pair">'+card(q.opts[0],'a')+card(q.opts[1],'b')+'</div>'+
  '<div class="answers" role="group" aria-label="Your answer">'+ab('this','This')+ab('neither','Neither')+ab('both','Both')+ab('that','That')+'</div>'+
+ '<div class="notebox"><button type="button" class="btn btn-quiet notebtn mw-hover'+(noteOf(q.id)?' has':'')+'" id="noteBtn" aria-expanded="false">'+(noteOf(q.id)?'✎ Note':'Add Note')+'</button>'+
+ '<div class="noteedit" id="noteEdit" hidden><textarea id="noteText" rows="3" maxlength="1000" placeholder="Optional note. Answer any time; it saves with your pick." aria-label="Note">'+esc(noteOf(q.id))+'</textarea></div></div>'+
  '<div class="qfoot"><button type="button" class="btn btn-quiet mw-hover" id="back">'+(i===0?'Basics':'Back')+'</button><button type="button" class="btn btn-quiet mw-hover" id="skip">Skip</button></div>';
  app.querySelectorAll('[data-ans]').forEach(function(b){b.addEventListener('click',function(){answer(b.dataset.ans);});});
+ $('#noteBtn').addEventListener('click',function(){var e=$('#noteEdit'),o=e.hidden;e.hidden=!o;this.setAttribute('aria-expanded',o);if(o)$('#noteText').focus({preventScroll:true});});
+ $('#noteText').addEventListener('input',function(){var b=$('#noteBtn'),t=this.value.trim();b.textContent=t?'✎ Note':'Add Note';b.classList.toggle('has',!!t);});
  $('#back').addEventListener('click',back);$('#skip').addEventListener('click',function(){answer('skip');});
  var n=Q[i+1];if(n)n.opts.forEach(function(o){var im=new Image();im.src=o.img;});
 }
-function answer(v){var q=Q[S.i];S.ans[q.id]=v;S.i++;if(S.i>=Q.length){S.screen='results';}save();go();}
+/* ---------- NOTES ON VOTES (localStorage only; never on the public page) ---------- */
+function noteOf(id){return (S.notes&&S.notes[id]&&S.notes[id].note)||'';}
+function setNote(id,t){S.notes=S.notes||{};t=String(t||'').trim().slice(0,1000);if(t)S.notes[id]={note:t,ts:new Date().toISOString()};else delete S.notes[id];}
+var ANS_L={this:'This',that:'That',both:'Both',neither:'Neither',skip:'Skipped'};
+function pickLabel(q,a){return a==='this'?q.opts[0].title:a==='that'?q.opts[1].title:a==='both'?q.opts[0].title+' + '+q.opts[1].title:'';}
+function resultsText(){return 'THIS OR THAT HOME RESULTS ('+new Date().toISOString().slice(0,10)+')\n'+Q.slice().sort(function(a,b){return a.head.localeCompare(b.head);}).map(function(q){var a=d(q.id),n=noteOf(q.id);return q.head+': '+ANS_L[a]+(pickLabel(q,a)?' ('+pickLabel(q,a)+')':'')+(n?' | Note: '+n:'');}).join('\n');}
+function resultsJson(){return {app:'This or That Home',exported:new Date().toISOString(),intro:S.intro,answers:Q.map(function(q){var a=S.ans[q.id]||null;return {id:q.id,question:q.head,answer:a,pick:a?pickLabel(q,a)||null:null,note:noteOf(q.id)||null,noteTs:(S.notes&&S.notes[q.id]&&S.notes[q.id].ts)||null};})};}
+var OPEN={};
+function answersHTML(){return '<section class="sec" id="myAnswers"><h2>Your Answers</h2><div class="actions"><button class="btn mw-hover" id="copyRes" type="button">Copy Results</button><button class="btn mw-hover" id="jsonRes" type="button">Export JSON</button></div><div class="arows">'+
+ Q.slice().sort(function(a,b){return a.head.localeCompare(b.head);}).map(function(q){var a=d(q.id),n=noteOf(q.id),o=!!OPEN[q.id];
+  return '<div class="arow" data-q="'+q.id+'"><button type="button" class="ahead" aria-expanded="'+o+'"><span class="at">'+esc(q.head)+'</span>'+(n?'<span class="noteicon" aria-label="Has Note" title="Has Note">✎</span>':'')+'<span class="apill '+a+'">'+ANS_L[a]+'</span></button>'+
+  '<div class="abody"'+(o?'':' hidden')+'>'+(pickLabel(q,a)?'<p class="small">Pick: '+esc(pickLabel(q,a))+'</p>':'')+'<label class="label" for="n_'+q.id+'">Note</label><textarea id="n_'+q.id+'" class="rownote" rows="2" maxlength="1000" placeholder="Add a note">'+esc(n)+'</textarea><button type="button" class="btn btn-quiet savenote mw-hover">Save Note</button></div></div>';}).join('')+'</div></section>';}
+function bindAnswers(){
+ $('#myAnswers').addEventListener('click',function(e){var r=e.target.closest('.arow');
+  if(e.target.closest('#copyRes')){var t=resultsText();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){flash('Results Copied');},function(){fallbackCopy(t);});else fallbackCopy(t);return;}
+  if(e.target.closest('#jsonRes')){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(resultsJson(),null,2)],{type:'application/json'}));a.download='this_or_that_home.json';document.body.appendChild(a);a.click();a.remove();flash('JSON Downloaded');return;}
+  if(!r)return;var id=r.dataset.q;
+  if(e.target.closest('.savenote')){setNote(id,r.querySelector('.rownote').value);save();flash(noteOf(id)?'Note Saved':'Note Cleared');OPEN[id]=1;var y=window.scrollY;$('#myAnswers').outerHTML=answersHTML();bindAnswers();window.scrollTo(0,y);return;}
+  if(e.target.closest('.ahead')){OPEN[id]=!OPEN[id];r.querySelector('.abody').hidden=!OPEN[id];r.querySelector('.ahead').setAttribute('aria-expanded',!!OPEN[id]);}
+ });}
+function answer(v){var q=Q[S.i],nt=$('#noteText');if(nt)setNote(q.id,nt.value);S.ans[q.id]=v;S.i++;if(S.i>=Q.length){S.screen='results';}save();go();}
 function back(){if(S.i<=0){S.screen='intro';save();return go();}S.i--;delete S.ans[Q[S.i].id];save();go();}
 document.addEventListener('keydown',function(e){if(S.screen!=='quiz'||location.hash||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
  var m={ArrowLeft:'this',ArrowRight:'that',ArrowUp:'both',ArrowDown:'neither'}[e.key];if(m){e.preventDefault();answer(m);}else if(e.key==='Backspace'){e.preventDefault();back();}});
@@ -372,6 +396,7 @@ function renderResults(){
  '<p class="label" style="margin-top:14px">Region</p><div class="seg" id="regSeg" role="group" aria-label="Region">'+Object.keys(REG).map(function(k){return '<button type="button" class="btn mw-hover'+(S.region===k?' on':'')+'" data-reg="'+k+'" aria-pressed="'+(S.region===k)+'">'+REG[k].n+'</button>';}).join('')+'</div>'+
  '<p class="label">Finish Tier</p><div class="seg" id="tierSeg" role="group" aria-label="Finish tier">'+Object.keys(TIERS).map(function(k){return '<button type="button" class="btn mw-hover'+(S.tier===k?' on':'')+'" data-tier="'+k+'" aria-pressed="'+(S.tier===k)+'">'+TIERS[k].n+'</button>';}).join('')+'</div>'+
  '<div id="costOut"></div></section>'+
+ answersHTML()+
  '<section class="sec" id="sources"><h2>Cost Sources</h2>'+sourcesHTML()+'</section>'+
  '<section class="sec"><h2>Start Again</h2><p>Want to try different answers or another size?</p><div class="actions"><button class="btn mw-hover" id="over" type="button">Start Over</button><a class="btn mw-hover" href="#credits">Photo Credits</a></div></section>';
  LAST={name:name,P:P};
@@ -382,6 +407,7 @@ function renderResults(){
  $('#redo').addEventListener('click',function(){S.screen='quiz';S.i=Q.length-1;delete S.ans[Q[S.i].id];save();go();});
  $('#edit').addEventListener('click',function(){S.screen='intro';save();go();});
  $('#over').addEventListener('click',restart);
+ bindAnswers();
 }
 function segs(){app.querySelectorAll('[data-reg]').forEach(function(b){var on=b.dataset.reg===S.region;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
  app.querySelectorAll('[data-tier]').forEach(function(b){var on=b.dataset.tier===S.tier;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});}
@@ -407,11 +433,12 @@ function renderSources(){app.innerHTML='<p><a class="btn btn-quiet mw-hover" hre
 /* ---------- SHARE ---------- */
 function shareText(){
  var url=location.origin+location.pathname;
- if(S.screen==='results'&&LAST.cost){var C=LAST.cost,P=LAST.P;return {url:url,text:'My This or That Home: '+LAST.name+'. '+fmt(P.A)+' sq ft, '+P.beds+' bed / '+P.baths+' bath. Rough cost '+usd(C.tot[0])+'–'+usd(C.tot[1])+' ('+C.R.n+', '+C.T.n+').'};}
+ if(S.screen==='results'&&LAST.cost){var C=LAST.cost,P=LAST.P;return {url:url,text:'My This or That Home: '+LAST.name+'. '+fmt(P.A)+' sq ft, '+P.beds+' bed / '+P.baths+' bath. Rough cost '+usd(C.tot[0])+'–'+usd(C.tot[1])+' ('+C.R.n+', '+C.T.n+').'+notesLine()};}
  var c={this:0,that:0,both:0,neither:0};Object.keys(S.ans).forEach(function(k){if(c[S.ans[k]]!=null)c[S.ans[k]]++;});
  var n=Object.keys(S.ans).length;
  return {url:url,text:n?'My picks so far: '+c.this+' This, '+c.that+' That, '+c.both+' Both, '+c.neither+' Neither.':'Design your house with 20 This or That questions.'};
 }
+function notesLine(){var ns=Q.filter(function(q){return noteOf(q.id);});return ns.length?' Notes: '+ns.slice(0,3).map(function(q){return q.head+': '+noteOf(q.id).slice(0,80);}).join('; ')+(ns.length>3?' (+'+(ns.length-3)+' more)':'')+'.':'';}
 function flash(m){var e=$('#shareMsg');e.textContent=m;clearTimeout(flash.t);flash.t=setTimeout(function(){e.textContent='';},2500);}
 $('#shareBtn').addEventListener('click',function(){
  var s=shareText(),full=s.text+' '+s.url;
@@ -423,6 +450,6 @@ $('#shareBtn').addEventListener('click',function(){
 function fallbackCopy(t){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');flash('Copied');}catch(e){flash('Copy this link: '+location.href);}a.remove();}
 $('#restartTop').addEventListener('click',restart);
 window.addEventListener('hashchange',function(){render();window.scrollTo(0,0);});
-window.__totm={cost:cost,program:program,state:function(){return S;}};
+window.__totm={cost:cost,program:program,state:function(){return S;},resultsText:resultsText,resultsJson:resultsJson,shareText:shareText};
 render();
 })();

@@ -145,3 +145,17 @@ tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--mw-primary)}
 @media (hover:none){.btn:hover{background:transparent;color:var(--mw-primary)}.btn-solid:hover{background:var(--mw-primary);color:#fff}.seg .btn.on:hover{background:var(--mw-primary);color:#fff}.ans.this.on,.ans.that.on,.ans.both.on,.ans.neither.on{color:#fff}}
 .plan svg{max-height:720px}
 .sw div{overflow-wrap:anywhere}
+
+/* Notes on Votes */
+.notebox{display:flex;flex-direction:column;align-items:center;gap:8px;margin:10px 0 0}
+.notebtn{font-size:.74rem}.notebtn.has{border-color:var(--mw-primary);color:var(--mw-primary)}
+.noteedit{width:100%;max-width:640px}.noteedit textarea,.rownote{width:100%;font:400 16px/1.4 var(--mw-font-body);border:2px solid var(--mw-primary);border-radius:0;padding:10px;background:#fff;color:var(--mw-foreground);resize:vertical}
+.arows{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.arow{background:#fff;border:1px solid var(--mw-border);border-radius:10px}
+.ahead{all:unset;box-sizing:border-box;width:100%;min-height:44px;display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer}
+.ahead:focus-visible{outline:2px solid var(--mw-primary)}.ahead .at{flex:1;min-width:0;font-weight:600;overflow-wrap:anywhere}
+.noteicon{color:var(--mw-primary)}
+.apill{font:700 .72rem/1 var(--mw-font-body);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border:2px solid var(--mw-border);color:var(--mw-muted-text);white-space:nowrap}
+.apill.this{border-color:var(--this);color:var(--this)}.apill.that{border-color:var(--that);color:var(--that)}.apill.both{border-color:var(--both);color:var(--both)}
+.abody{padding:0 14px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}.abody[hidden]{display:none}.abody p{margin:0}
+@media print{.notebox,#myAnswers .actions,.abody .savenote{display:none}}
