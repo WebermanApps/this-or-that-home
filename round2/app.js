@@ -145,7 +145,7 @@ window.__r2={state:function(){return S;},resultsText:resultsText,resultsJson:res
       var m=meta(), results=Object.assign({}, JSON.parse(localStorage.getItem(KEY)||'{}'), m);
       try{ localStorage.setItem('mw-submit-backup-'+APP, JSON.stringify({savedAt:new Date().toISOString(),app:APP,results:results,notes:notes()})); }catch(e){}
       MWSubmit.send({agent:AGENT, app:APP, deck:'2026-10-13', results:results, notes:notes(), partial:true, answered:m.answered, total:m.total, unanswered:m.unanswered, test:!!m.test})
-        .then(function(ok){ b.disabled=false; sentFloat(ok?('Sent '+m.answered+'/'+m.total):'Saved, will send'); });
+        .then(function(ok){ b.disabled=false; if(!ok&&MWSubmit.blocked){ sentFloat('Password needed'); return; } sentFloat(ok?('Sent '+m.answered+'/'+m.total):'Saved, will send'); });
     });
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bindPartial); else bindPartial();
