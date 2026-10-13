@@ -1,4 +1,4 @@
-/* Construction Submit hook: shows the shared MWSubmit button on an app's end screen.
+/* Blueprint Submit hook: shows the shared MWSubmit button on an app's end screen.
    MWHook({app,deck,isEnd:()=>bool,mount:()=>el,before:()=>el|null,results:()=>obj,notes:()=>str,intro:str})
    No token here; MWSubmit posts to the shared receiver. ?mwtest=1 labels a submission TEST. */
 (function(w){
@@ -11,9 +11,10 @@
     var test=/[?&]mwtest=1\b/.test(location.search);
     if(!document.getElementById('mws-sec-css')){var s=document.createElement('style');s.id='mws-sec-css';s.textContent=CSS;document.head.appendChild(s);}
     function payloadResults(){var r;try{r=strip(c.results());}catch(e){r={error:'could not read results: '+e.message};}
-      return test?{test:true,label:'TEST',results:r}:r;}
+      if(r&&typeof r==='object'&&!Array.isArray(r)) r.agentId=c.agentId||'5b23bb2f-ffc9-4b61-b04c-43a3943eac12';
+      return test?{test:true,label:'TEST',agentId:c.agentId||'5b23bb2f-ffc9-4b61-b04c-43a3943eac12',results:r}:r;}
     function payloadNotes(){var n='';try{n=(c.notes&&c.notes())||'';}catch(e){}
-      return test?('TEST submit from Construction agent, please ignore. '+n).trim():n;}
+      return test?('TEST submit from Blueprint agent, please ignore. '+n).trim():n;}
     function backup(){try{localStorage.setItem('mw-submit-backup-'+c.app,JSON.stringify({savedAt:new Date().toISOString(),app:c.app,deck:c.deck,results:payloadResults(),notes:payloadNotes()}));}catch(e){}}
     function tick(){
       var box=document.getElementById('mwSubmit');var end=false;try{end=c.isEnd();}catch(e){}
@@ -24,7 +25,7 @@
       box.innerHTML='<h2>Send to Max</h2><p>'+(c.intro||'Tap Submit to send your answers and notes straight to Max.')+'</p><p>A copy is also kept on this device.</p>';
       var bf=c.before&&c.before();if(bf&&bf.parentNode===host)host.insertBefore(box,bf);else host.appendChild(box);
       box.addEventListener('click',function(e){if(e.target.closest('.mws-btn'))backup();},true);
-      w.MWSubmit.button(box,{agent:'construction',app:c.app,deck:c.deck,getResults:payloadResults,getNotes:payloadNotes});
+      w.MWSubmit.button(box,{agent:'blueprint',app:c.app,deck:c.deck,getResults:payloadResults,getNotes:payloadNotes});
       if(c.onMount)c.onMount();
     }
     function start(){new MutationObserver(tick).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class','hidden']});tick();}
