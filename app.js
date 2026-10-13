@@ -307,7 +307,7 @@ function renderIntro(){
   S.screen=S.i>=Q.length?'results':'quiz';save();go();});
  var sf=$('#startFresh');if(sf)sf.addEventListener('click',restart);
 }
-function go(){window.scrollTo(0,0);render();app.focus({preventScroll:true});}
+function go(){window.scrollTo(0,0);render();document.body.classList.toggle('quiz',S.screen==='quiz');app.focus({preventScroll:true});}
 function restart(){if(Object.keys(S.ans).length&&!confirm('Start over and clear your answers?'))return;S=def();save();location.hash='';go();}
 
 /* ---------- RENDER: QUIZ ---------- */
@@ -449,7 +449,7 @@ $('#shareBtn').addEventListener('click',function(){
 });
 function fallbackCopy(t){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');flash('Copied');}catch(e){flash('Copy this link: '+location.href);}a.remove();}
 $('#restartTop').addEventListener('click',restart);
-window.addEventListener('hashchange',function(){render();window.scrollTo(0,0);});
+window.addEventListener('hashchange',function(){render();document.body.classList.toggle('quiz',S.screen==='quiz');window.scrollTo(0,0);});
 window.__totm={cost:cost,program:program,state:function(){return S;},resultsText:resultsText,resultsJson:resultsJson,shareText:shareText};
-render();
+render();document.body.classList.toggle('quiz',S.screen==='quiz');
 })();
