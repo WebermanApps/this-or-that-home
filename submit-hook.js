@@ -11,7 +11,8 @@
     var test=/[?&]mwtest=1\b/.test(location.search);
     if(!document.getElementById('mws-sec-css')){var s=document.createElement('style');s.id='mws-sec-css';s.textContent=CSS;document.head.appendChild(s);}
     function payloadResults(){var r;try{r=strip(c.results());}catch(e){r={error:'could not read results: '+e.message};}
-      if(r&&typeof r==='object'&&!Array.isArray(r)) r.agentId=c.agentId||'5b23bb2f-ffc9-4b61-b04c-43a3943eac12';
+      if(r&&typeof r==='object'&&!Array.isArray(r)){ r.agentId=c.agentId||'5b23bb2f-ffc9-4b61-b04c-43a3943eac12';
+        if(c.meta){try{var m=c.meta(r)||{};Object.keys(m).forEach(function(k){r[k]=m[k]});}catch(e){}} }
       return test?{test:true,label:'TEST',agentId:c.agentId||'5b23bb2f-ffc9-4b61-b04c-43a3943eac12',results:r}:r;}
     function payloadNotes(){var n='';try{n=(c.notes&&c.notes())||'';}catch(e){}
       return test?('TEST submit from Blueprint agent, please ignore. '+n).trim():n;}
@@ -26,6 +27,7 @@
       var bf=c.before&&c.before();if(bf&&bf.parentNode===host)host.insertBefore(box,bf);else host.appendChild(box);
       box.addEventListener('click',function(e){if(e.target.closest('.mws-btn'))backup();},true);
       w.MWSubmit.button(box,{agent:'blueprint',app:c.app,deck:c.deck,getResults:payloadResults,getNotes:payloadNotes});
+      if(!box.querySelector('.mw-backdecks')){var a=document.createElement('a');a.className='mw-backdecks mw-hover';a.href='https://webermanapps.github.io/branding-djqmb410/decks/';a.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to Deck Building</span>';box.appendChild(a);}
       if(c.onMount)c.onMount();
     }
     function start(){new MutationObserver(tick).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class','hidden']});tick();}

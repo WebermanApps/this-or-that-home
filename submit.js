@@ -1,5 +1,6 @@
 /* MWSubmit: shared Submit button. Usage:
    MWSubmit.button(el,{agent,app,deck,getResults:()=>obj,getNotes:()=>str})
+   MWSubmit.send({agent,app,deck,results,notes,partial,answered,total,unanswered,test}) -> Promise<bool>  (mid-deck Submit)
    POSTs text/plain JSON (no-cors) to the shared Apps Script receiver. No token in client code. */
 (function(w){
   var URL='https://script.google.com/macros/s/AKfycbwoYorVuS4ZQdlmPM0CAYQ5qOoeuR4GjMk5Myg7rLpurHxt_6iqyZgJgYaxuZqoQdv7/exec';
@@ -33,6 +34,11 @@
     state(q().some(function(p){return p.agent===o.agent&&p.deck===o.deck})?'fail':'idle');
     flush().then(function(n){if(n&&!q().some(function(p){return p.agent===o.agent&&p.deck===o.deck}))state('sent')});
     return {el:wrap,state:state};}
-  w.MWSubmit={button:button,flush:flush,url:URL};
+  /* send(o): one-shot submit with no button (mid-deck partial). o: {agent,app,deck,results,notes,partial,answered,total,unanswered,test}.
+     Resolves true when posted, false when queued on device for retry. */
+  function send(o){o=o||{};var p={agent:o.agent,app:o.app,deck:o.deck,results:o.results||null,notes:o.notes||'',sentAt:new Date().toISOString(),ua:navigator.userAgent};
+    ['partial','answered','total','unanswered','test'].forEach(function(k){if(o[k]!==undefined)p[k]=o[k]});
+    return post(p).then(function(){return true},function(){setQ(q().concat([p]));return false});}
+  w.MWSubmit={button:button,send:send,flush:flush,url:URL};
   w.addEventListener('online',flush);
 })(window);

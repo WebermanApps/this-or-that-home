@@ -122,5 +122,36 @@ function fallbackCopy(t){var a=document.createElement('textarea');a.value=t;a.se
 $('#restartTop').addEventListener('click',restart);
 window.addEventListener('hashchange',function(){render();document.body.classList.toggle('quiz',S.screen==='quiz');window.scrollTo(0,0);});
 window.__r2={state:function(){return S;},resultsText:resultsText,resultsJson:resultsJson,shareText:shareText};
+
+/* Partial Submit anytime (Max Oct 13) */
+(function(){
+  var AGENT='blueprint', AGENT_ID='5b23bb2f-ffc9-4b61-b04c-43a3943eac12', APP='this-or-that-home-r2', KEY='totm-r2-v1';
+  function isTest(){ return /[?&](?:mwtest|test)=1\b/.test(location.search); }
+  function sentFloat(msg){ var d=document.createElement('div'); d.className='mw-sent'; d.setAttribute('role','status'); d.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span></span>'; d.lastChild.textContent=msg; document.body.appendChild(d); setTimeout(function(){ d.remove(); },1900); }
+  function meta(){
+    var un=Q.filter(function(q){ return !S.ans[q.id]; }).map(function(q){ return q.id; });
+    var ans=Object.keys(S.ans).length, tot=Q.length;
+    return {partial:un.length>0, answered:ans, total:tot, unanswered:un, agentId:AGENT_ID, test:isTest()||undefined};
+  }
+  function notes(){
+    var o=[], n=S.notes||{}; Object.keys(n).forEach(function(k){ if(n[k]&&n[k].note) o.push(k+': '+n[k].note); });
+    var t=o.join('\n'); return isTest()?('TEST submit from Blueprint agent, please ignore. '+t).trim():t;
+  }
+  function bindPartial(){
+    var b=document.getElementById('btnPartialSubmit'); if(!b||b._mwBound) return; b._mwBound=1;
+    b.addEventListener('click', function(){
+      if(b.disabled||typeof MWSubmit==='undefined') return;
+      b.disabled=true;
+      var m=meta(), results=Object.assign({}, JSON.parse(localStorage.getItem(KEY)||'{}'), m);
+      try{ localStorage.setItem('mw-submit-backup-'+APP, JSON.stringify({savedAt:new Date().toISOString(),app:APP,results:results,notes:notes()})); }catch(e){}
+      MWSubmit.send({agent:AGENT, app:APP, deck:'2026-10-13', results:results, notes:notes(), partial:true, answered:m.answered, total:m.total, unanswered:m.unanswered, test:!!m.test})
+        .then(function(ok){ b.disabled=false; sentFloat(ok?('Sent '+m.answered+'/'+m.total):'Saved, will send'); });
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bindPartial); else bindPartial();
+  var _go=go; go=function(){ _go(); bindPartial(); };
+})();
+
 render();document.body.classList.toggle('quiz',S.screen==='quiz');
 })();
+

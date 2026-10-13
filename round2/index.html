@@ -26,9 +26,11 @@
 <body>
 <header class="top">
   <div class="top-left"><a class="dashnav mw-hover" href="https://webermanapps.github.io/blueprint-dashboard/">Blueprint Dashboard</a>
+  <a class="mw-deckslink mw-hover" href="https://webermanapps.github.io/branding-djqmb410/decks/" title="Deck Building"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg><span class="l">Deck Building</span><span class="s">Decks</span></a>
   <a class="wordmark" href="./" aria-label="Weberman Residence, This or That Round 2">MAX WEBERMAN</a>
   </div>
-  <button id="restartTop" class="btn btn-quiet mw-hover" type="button" hidden>Start Over</button>
+  <div class="top-right"><button type="button" id="btnPartialSubmit" class="mw-hover" title="Submit answers so far" aria-label="Submit answers so far"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 12l16-8-6 16-3-7z"/></svg>Submit</button>
+  <button id="restartTop" class="btn btn-quiet mw-hover" type="button" hidden>Start Over</button></div>
 </header>
 <main id="app" tabindex="-1"></main>
 <footer class="foot">
@@ -51,11 +53,13 @@
 <script src="../submit.js"></script>
 <script src="../submit-hook.js"></script>
 <script>
-MWHook({app:'this-or-that-home-r2',deck:'2026-10-13',
+MWHook({app:'this-or-that-home-r2',deck:'2026-10-13',agentId:'5b23bb2f-ffc9-4b61-b04c-43a3943eac12',
  isEnd:function(){return !!document.getElementById('myAnswers');},
  mount:function(){return document.getElementById('app');},
  results:function(){return JSON.parse(localStorage.getItem('totm-r2-v1')||'{}');},
- notes:function(){var s=JSON.parse(localStorage.getItem('totm-r2-v1')||'{}'),n=s.notes||{};return Object.keys(n).filter(function(k){return n[k]&&n[k].note;}).map(function(k){return k+': '+n[k].note;}).join('\n');}});
+ notes:function(){var s=JSON.parse(localStorage.getItem('totm-r2-v1')||'{}'),n=s.notes||{};return Object.keys(n).filter(function(k){return n[k]&&n[k].note;}).map(function(k){return k+': '+n[k].note;}).join('
+');}
+});
 </script>
 <!-- /mw-submit -->
 </body>
