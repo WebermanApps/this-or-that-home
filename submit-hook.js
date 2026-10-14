@@ -1,6 +1,6 @@
 /* Blueprint Submit hook: shows the shared MWSubmit button on an app's end screen.
    MWHook({app,deck,isEnd:()=>bool,mount:()=>el,before:()=>el|null,results:()=>obj,notes:()=>str,intro:str})
-   No token here; MWSubmit posts to the shared receiver. ?mwtest=1 labels a submission TEST. */
+   No secrets here; MWSubmit posts to the shared receiver. ?mwtest=1 labels a submission TEST. */
 (function(w){
   var CSS='.mws-sec{margin:24px 0;padding:18px 16px;border:1px solid #e5e5e5;background:#fff;color:#0a0a0a;box-sizing:border-box;max-width:100%}'+
   '.mws-sec h2{margin:0 0 6px;font-family:Khand,Hind,system-ui,sans-serif;font-weight:700;font-size:1.4rem;letter-spacing:.04em}'+

@@ -458,9 +458,10 @@ window.__totm={cost:cost,program:program,state:function(){return S;},resultsText
   function isTest(){ return /[?&](?:mwtest|test)=1\b/.test(location.search); }
   function sentFloat(msg){ var d=document.createElement('div'); d.className='mw-sent'; d.setAttribute('role','status'); d.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span></span>'; d.lastChild.textContent=msg; document.body.appendChild(d); setTimeout(function(){ d.remove(); },1900); }
   function meta(){
-    var un=Q.filter(function(q){ return !S.ans[q.id]; }).map(function(q){ return q.id; });
-    var ans=Object.keys(S.ans).length, tot=Q.length;
-    return {partial:un.length>0, answered:ans, total:tot, unanswered:un, agentId:AGENT_ID, test:isTest()||undefined};
+    var un=Q.filter(function(q){ var a=S.ans[q.id]; return !a || a==='skip'; }).map(function(q){ return q.id; });
+    var skipped=Q.filter(function(q){ return S.ans[q.id]==='skip'; }).map(function(q){ return q.id; });
+    var ans=Q.filter(function(q){ var a=S.ans[q.id]; return a && a!=='skip'; }).length, tot=Q.length;
+    return {partial:un.length>0, answered:ans, total:tot, unanswered:un, skipped:skipped, agentId:AGENT_ID, test:isTest()||undefined};
   }
   function notes(){
     var o=[], n=S.notes||{}; Object.keys(n).forEach(function(k){ if(n[k]&&n[k].note) o.push(k+': '+n[k].note); });
