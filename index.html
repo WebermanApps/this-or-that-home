@@ -1,55 +1,20 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light only">
-<meta name="theme-color" content="#ffffff">
-<title>This or That Home | Max Weberman</title>
-<meta name="description" content="Answer 20 This or That questions and get a house design concept, room program, floor plan, and rough price breakdown.">
-<link rel="icon" href="favicon.ico">
-<link rel="stylesheet" href="style.css">
-<script src="ptr.js?v=3" defer></script>
-</head>
-<body>
-<header class="top">
-  <div class="top-left"><a class="dashnav mw-hover" href="https://webermanapps.github.io/blueprint-dashboard/">Blueprint Dashboard</a>
-  <a class="mw-deckslink mw-hover" href="https://webermanapps.github.io/branding-djqmb410/decks/" title="Deck Building"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg><span class="l">Deck Building</span><span class="s">Decks</span></a>
-  <a class="wordmark" href="./" aria-label="Max Weberman home">MAX WEBERMAN</a>
-  </div>
-  <div class="top-right"><button type="button" id="btnPartialSubmit" class="mw-hover" title="Submit answers so far" aria-label="Submit answers so far"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 12l16-8-6 16-3-7z"/></svg>Submit</button>
-  <button id="restartTop" class="btn btn-quiet mw-hover" type="button" hidden>Start Over</button></div>
-</header>
-<main id="app" tabindex="-1"></main>
-<footer class="foot">
-  <p>Photos: openly licensed from Wikimedia Commons and Openverse. <a href="#credits" id="creditsLink">Photo Credits</a> · <a href="#sources" id="sourcesLink">Cost Sources</a></p>
-  <p>&copy; Max Weberman. Concepts and estimates are for early planning only.</p>
-</footer>
-<div class="sharebar">
-  <button id="shareBtn" class="btn mw-hover" type="button">Share</button>
-  <span id="shareMsg" role="status" aria-live="polite"></span>
-</div>
-<script src="data.js"></script>
-<script src="app.js"></script>
-<!-- mw-built-footer -->
-<style>.mw-built{display:block;clear:both;width:100%;box-sizing:border-box;margin:0;padding:14px 16px calc(14px + var(--mw-built-pad,0px) + env(safe-area-inset-bottom,0px));background:#fafaf8;text-align:center;font-family:Hind,system-ui,sans-serif;font-size:12px;line-height:1.4;color:#8a8a8a;position:relative;z-index:1}.mw-built a{color:#8a8a8a;text-decoration:none;transition:color .15s,opacity .15s}.mw-built a.mw-hover:hover,.mw-built a:focus-visible{color:#555;text-decoration:underline}</style>
-<footer class="mw-built"><a class="mw-hover" href="https://maxweberman.com" target="_blank" rel="noopener">Built by Max Weberman</a></footer>
-<script>(function(){var r=document.documentElement;function m(){var ft=document.querySelector('.mw-built'),h=0,vh=innerHeight;if(!ft)return;document.querySelectorAll('body *').forEach(function(e){if(ft.contains(e))return;var s=getComputedStyle(e);if((s.position=='fixed'||s.position=='sticky')&&s.display!='none'&&s.visibility!='hidden'){var b=e.getBoundingClientRect();if(b.height>0&&b.height<vh*.5&&b.bottom>=vh-2&&b.top>vh*.5)h=Math.max(h,vh-b.top)}});r.style.setProperty('--mw-built-pad',Math.ceil(h)+'px')}addEventListener('load',m);addEventListener('resize',m);setTimeout(m,600);setTimeout(m,2000)})();</script>
-<!-- /mw-built-footer -->
-
-<!-- mw-submit -->
-<script src="submit.js?v=r64"></script>
-<script src="submit-hook.js"></script>
-<script>
-MWHook({app:'this-or-that-home',deck:'2026-10-13',agentId:'5b23bb2f-ffc9-4b61-b04c-43a3943eac12',
- isEnd:function(){return !!document.getElementById('myAnswers');},
- mount:function(){return document.getElementById('app');},
- results:function(){return JSON.parse(localStorage.getItem('totm-v1')||'{}');},
- notes:function(){var s=JSON.parse(localStorage.getItem('totm-v1')||'{}'),o=[];if(s.intro&&s.intro.notes)o.push('Basics: '+s.intro.notes);var n=s.notes||{};Object.keys(n).forEach(function(k){if(n[k]&&n[k].note)o.push(k+': '+n[k].note);});return o.join('
-');},
- meta:function(){var s=JSON.parse(localStorage.getItem('totm-v1')||'{}'),ans=s.ans||{},answered=Object.keys(ans).length;return {partial:false,answered:answered};}
-});
-</script>
-<!-- /mw-submit -->
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="light only"><meta name="theme-color" content="#FAF6EE">
+<title>This or That Home | Max Weberman</title><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="favicon.ico" sizes="any"><link rel="manifest" href="manifest.webmanifest">
+<style>*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#FAF6EE;color:#1a1a1a;font-family:Hind,-apple-system,system-ui,sans-serif}
+body{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}main{flex:1;display:flex;align-items:center;justify-content:center;padding:24px 20px}
+.card{width:100%;max-width:360px;background:#fff;border:1px solid #e6dfd1;padding:28px 22px}h1{font-size:28px;margin:0 0 4px;font-weight:700}p{margin:0 0 20px;color:#5c5c5c;font-size:15px}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}input[type=password]{width:100%;font-size:16px;min-height:48px;padding:10px 12px;border:1px solid #cfc6b4;background:#fffdf8;border-radius:0}
+.rm{display:flex;align-items:center;gap:10px;margin:14px 0 18px;font-size:15px;min-height:44px}.rm input{width:20px;height:20px}
+button{width:100%;min-height:48px;font-size:16px;font-weight:600;background:#1a1a1a;color:#fff;border:0;border-radius:0;cursor:pointer}
+#err{color:#a12a1b;font-size:14px;min-height:20px;margin:10px 0 0}footer{text-align:center;font-size:13px;color:#737373;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}</style></head>
+<body><main><form class="card" id="f" hidden><h1>This or That Home | Max Weberman</h1><p>Enter the password to open.</p>
+<label for="p">Password</label><input id="p" type="password" autocomplete="current-password" required autofocus enterkeyhint="go">
+<label class="rm"><input type="checkbox" id="r" checked> Remember this device</label><button type="submit">Open</button><div id="err" role="alert"></div></form></main>
+<footer>Built by Max Weberman</footer>
+<script>(()=>{const D={"s": "h1YeWA5S7tHNNgfrOtWNBw==", "i": "zYUTp+cnIcx0GIV+", "c": "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", "n": 600000},K='mwPagesKey',u=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)),f=document.getElementById('f');
+async function dec(raw){const k=await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['decrypt']);return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:u(D.i)},k,u(D.c)))}
+function show(t){document.open();document.write(t);document.close()}
+addEventListener('DOMContentLoaded',async()=>{const s=localStorage.getItem(K);if(s){try{show(await dec(u(s)));return}catch(e){localStorage.removeItem(K)}}f.hidden=false;document.getElementById('p').focus()});
+f.onsubmit=async e=>{e.preventDefault();const er=document.getElementById('err');er.textContent='';try{const b=await crypto.subtle.importKey('raw',new TextEncoder().encode(document.getElementById('p').value),'PBKDF2',false,['deriveBits']);
+const raw=new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt:u(D.s),iterations:D.n,hash:'SHA-256'},b,256));const t=await dec(raw);
+if(document.getElementById('r').checked)localStorage.setItem(K,btoa(String.fromCharCode(...raw)));show(t)}catch(x){er.textContent='Wrong password. Try again.'}}})()</script></body></html>
