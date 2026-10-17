@@ -1,3 +1,9 @@
+/* R104: Back goes where the user came from: history, same-origin referrer, trusted from=, then fixed fallback. */
+window.mwGoBack=window.mwGoBack||function(e,fb){if(e&&e.preventDefault)e.preventDefault();
+ if(history.length>1){history.back();return false;}
+ try{var r=document.referrer;if(r&&new URL(r).origin===location.origin){location.href=r;return false;}}catch(x){}
+ try{var f=new URLSearchParams(location.search).get('from');if(f){var u=new URL(f,location.href);if(u.origin===location.origin||(u.protocol==='https:'&&u.hostname==='webermanapps.github.io')){location.href=u.href;return false;}}}catch(x){}
+ location.href=fb;return false;};
 (function(){
 'use strict';
 var Q=window.QUESTIONS, KEY='totm-v1', $=function(s,r){return (r||document).querySelector(s)};
@@ -426,9 +432,9 @@ function sourcesHTML(){return '<ol class="srcs">'+SOURCES.map(function(s){var u=
  '<p class="small">Ranges are hard building cost per sq ft of house; the app adds outdoor works, landscape, fees, permits, and contingency on top. Thailand: 18–30k / 35–60k / 60–110k THB per m² building cost. Japan: ¥0.7–1.0M / 1.0–1.4M / 1.4–2.0M per tsubo at ¥150 per USD. Europe: €1,600–2,600 / 2,600–3,800 / 3,800–6,000 per m² at 1 EUR = 1.15 USD. Rates move; check locally.</p>';}
 function renderCredits(){
  var all=[];Q.forEach(function(q){q.opts.forEach(function(o){all.push(o);});});
- app.innerHTML='<p><a class="btn btn-quiet mw-hover" href="#">Back</a></p><h1>Photo Credits</h1><p>All photos are openly licensed (Creative Commons, CC0, or public domain) and cropped for this app.</p><ol class="credits">'+
+ app.innerHTML='<p><a class="btn btn-quiet mw-hover" href="#" onclick="return mwGoBack(event,\'#\')">Back</a></p><h1>Photo Credits</h1><p>All photos are openly licensed (Creative Commons, CC0, or public domain) and cropped for this app.</p><ol class="credits">'+
  all.map(function(o){var c=o.credit;return '<li><strong>'+esc(o.title)+'</strong>: <a href="'+esc(c.url)+'" target="_blank" rel="noopener">'+esc(c.name)+'</a> by '+esc(c.by)+', '+esc(c.lic)+'</li>';}).join('')+'</ol>';}
-function renderSources(){app.innerHTML='<p><a class="btn btn-quiet mw-hover" href="#">Back</a></p><h1>Cost Sources</h1>'+sourcesHTML();}
+function renderSources(){app.innerHTML='<p><a class="btn btn-quiet mw-hover" href="#" onclick="return mwGoBack(event,\'#\')">Back</a></p><h1>Cost Sources</h1>'+sourcesHTML();}
 
 /* ---------- SHARE ---------- */
 function shareText(){

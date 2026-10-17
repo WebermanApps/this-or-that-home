@@ -1,3 +1,9 @@
+/* R104: Back goes where the user came from: history, same-origin referrer, trusted from=, then fixed fallback. */
+window.mwGoBack=window.mwGoBack||function(e,fb){if(e&&e.preventDefault)e.preventDefault();
+ if(history.length>1){history.back();return false;}
+ try{var r=document.referrer;if(r&&new URL(r).origin===location.origin){location.href=r;return false;}}catch(x){}
+ try{var f=new URLSearchParams(location.search).get('from');if(f){var u=new URL(f,location.href);if(u.origin===location.origin||(u.protocol==='https:'&&u.hostname==='webermanapps.github.io')){location.href=u.href;return false;}}}catch(x){}
+ location.href=fb;return false;};
 (function(){
 'use strict';
 var Q=window.QUESTIONS, KEY='totm-r2-v1', $=function(s,r){return (r||document).querySelector(s)};
@@ -107,7 +113,7 @@ function redraw(){var y=window.scrollY;$('#myAnswers').outerHTML=listHTML();bind
 
 /* ---------- CREDITS ---------- */
 function renderCredits(){var seen={},all=[];Q.forEach(function(q){q.opts.forEach(function(o){if(!seen[o.key]){seen[o.key]=1;all.push(o);}});});
- app.innerHTML='<p><a class="btn btn-quiet mw-hover" href="#">Back</a></p><h1>Photo Credits</h1><ol class="credits">'+all.map(function(o){var c=o.credit;return '<li><strong>'+esc(o.title)+'</strong>: <a href="'+esc(c.url)+'" target="_blank" rel="noopener">'+esc(c.name)+'</a> by '+esc(c.by)+', '+esc(c.lic)+'</li>';}).join('')+'</ol>';}
+ app.innerHTML='<p><a class="btn btn-quiet mw-hover" href="#" onclick="return mwGoBack(event,\'#\')">Back</a></p><h1>Photo Credits</h1><ol class="credits">'+all.map(function(o){var c=o.credit;return '<li><strong>'+esc(o.title)+'</strong>: <a href="'+esc(c.url)+'" target="_blank" rel="noopener">'+esc(c.name)+'</a> by '+esc(c.by)+', '+esc(c.lic)+'</li>';}).join('')+'</ol>';}
 
 /* ---------- SHARE ---------- */
 function shareText(){var url=location.origin+location.pathname,c={this:0,that:0,both:0,neither:0};Object.keys(S.ans).forEach(function(k){if(c[S.ans[k]]!=null)c[S.ans[k]]++;});
