@@ -212,7 +212,7 @@ var SOURCES=[
  ['Opendoor, How Much Does It Cost to Build a House in 2026 (standard $150-250, custom $400+, high-cost $1,000+/sq ft)','https://www.opendoor.com/articles/how-much-does-it-cost-to-build-a-house'],
  ['BuildMat Insight, Luxury House Cost Per Square Foot 2026 (high-end $450-850, coastal markets 1.25-1.6x)','https://buildmatinsight.com/construction-cost/app-cost/luxury-house-cost-per-square-foot-calculator'],
  ['BuildGenius, Luxury Home Construction Cost 2026 by State (CA, NY, HI highest)','https://buildgenius.app/cost-to-build/luxury-home'],
- ['Max Weberman, Thailand Construction Cost Estimate (Oct 2026): 61k / 99k / 166k THB per m2 all-in for High-End, Premium, and International Luxury; market benchmarks, fees 7-10%, contingency 10-15%','#thailand-pdf'],
+ ['Thailand Construction Cost Estimate (Oct 2026): 61k / 99k / 166k THB per m2 all-in for High-End, Premium, and International Luxury; market benchmarks, fees 7-10%, contingency 10-15%','#thailand-pdf'],
  ['25design, Luxury Home Construction Cost per sqm (typical 12-20k, luxury 30-60k THB/m2)','https://www.25design.co.th/post/luxury-home-construction-cost-per-sqm'],
  ['Architect Phuket, Phuket Villa Build Cost 2026 (standard 25-30k to luxury 100k+ THB/m2)','https://architectphuket.com/phuket-villa-build-cost-2026/'],
  ['Chiang Rai Times, Building Costs in Thailand (Chiang Mai, Bangkok ranges)','https://www.chiangraitimes.com/expat-life/building-costs-thailand/'],
